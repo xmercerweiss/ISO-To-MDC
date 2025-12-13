@@ -39,6 +39,6 @@ public class RootFrame extends JFrame
 
   private void initDate()
   {
-    add(new DateComponent());
+    add(new ButtonPanel());
   }
 }
