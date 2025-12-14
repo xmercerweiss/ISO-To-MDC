@@ -1,7 +1,8 @@
-package net.xmercerweiss.iso2mdc;
+package net.xmercerweiss.iso2mdc.widgets;
 
 import java.awt.*;
 import javax.swing.*;
+import java.time.LocalDate;
 
 
 public class RootFrame extends JFrame
@@ -21,7 +22,9 @@ public class RootFrame extends JFrame
   {
     super(TITLE);
     initFrame();
-    initDate();
+    initDatePicker();
+    initDatePicker();
+    pack();
   }
 
   // Private Methods
@@ -37,8 +40,10 @@ public class RootFrame extends JFrame
     setVisible(true);
   }
 
-  private void initDate()
+  private void initDatePicker()
   {
-    add(new ButtonPanel());
+    add(
+      new DatePicker("Generic Date Picker", LocalDate.now())
+    );
   }
 }

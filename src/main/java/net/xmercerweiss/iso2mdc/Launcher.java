@@ -2,6 +2,8 @@ package net.xmercerweiss.iso2mdc;
 
 import java.awt.*;
 
+import net.xmercerweiss.iso2mdc.widgets.RootFrame;
+
 
 public class Launcher
 {
