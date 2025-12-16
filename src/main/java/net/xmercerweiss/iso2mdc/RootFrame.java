@@ -2,7 +2,7 @@ package net.xmercerweiss.iso2mdc;
 
 import java.awt.*;
 import javax.swing.*;
-import java.util.List;
+import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDate;
 
 import net.xmercerweiss.iso2mdc.dates.*;
@@ -20,15 +20,24 @@ public class RootFrame extends JFrame
 
   private static final String TITLE = "ISO to MDC";
 
+  private static final Font LABEL_FONT = new Font("Monospaced", Font.PLAIN, 12);
+
   // Instance Fields
-  private final List<DatePicker> datePickers;
+  private final DatePicker isoDatePicker;
+  private final DatePicker mdcDatePicker;
+  private final JLabel isoDateLabel;
+  private final JLabel mdcDateLabel;
 
   // Constructors
   public RootFrame()
   {
     super(TITLE);
     initFrame();
-    datePickers = initDatePickers();
+    isoDatePicker = initIsoDatePicker();
+    mdcDatePicker = initMdcDatePicker();
+    isoDateLabel = initIsoDateLabel();
+    mdcDateLabel = initMdcDateLabel();
+    renderNewDate(LocalDate.now());
     pack();
   }
 
@@ -46,31 +55,73 @@ public class RootFrame extends JFrame
     setVisible(true);
   }
 
-  private List<DatePicker> initDatePickers()
+  private DatePicker initIsoDatePicker()
   {
     GridBagConstraints pos = new GridBagConstraints();
-    pos.insets = new Insets(5, 10, 5, 10);
-    pos.gridy = 0;
-
-    DatePicker isoPicker = new IsoDatePicker();
-    isoPicker.setDateListener(this::updateDatePickers);
+    pos.insets = new Insets(15, 30, 15, 15);
     pos.gridx = 0;
-    add(isoPicker, pos);
-
-    DatePicker mdcPicker = new ModernDigitalDatePicker();
-    mdcPicker.setDateListener(this::updateDatePickers);
-    pos.gridx = 1;
-    add(mdcPicker, pos);
-
-    return List.of(
-      isoPicker,
-      mdcPicker
-    );
+    pos.gridy = 0;
+    pos.weighty = 1;
+    pos.fill = GridBagConstraints.BOTH;
+    DatePicker iso = new IsoDatePicker(this::renderNewDate);
+    add(iso, pos);
+    return iso;
   }
 
-  private void updateDatePickers(ChronoLocalDate newDate)
+  private DatePicker initMdcDatePicker()
   {
-    for (DatePicker picker : datePickers)
-      picker.setDate(newDate);
+    GridBagConstraints pos = new GridBagConstraints();
+    pos.insets = new Insets(15, 15, 15, 30);
+    pos.gridx = 1;
+    pos.gridy = 0;
+    pos.weighty = 1;
+    pos.fill = GridBagConstraints.BOTH;
+    DatePicker mdc = new ModernDigitalDatePicker(this::renderNewDate);
+    add(mdc, pos);
+    return mdc;
+  }
+
+  private JLabel initIsoDateLabel()
+  {
+    GridBagConstraints pos = new GridBagConstraints();
+    pos.insets = new Insets(5, 0, 20, 0);
+    pos.gridx = 0;
+    pos.gridy = 1;
+    pos.fill = GridBagConstraints.BOTH;
+    JLabel label = new JLabel("", SwingConstants.CENTER);
+    label.setFont(LABEL_FONT);
+    add(label, pos);
+    return label;
+  }
+
+  private JLabel initMdcDateLabel()
+  {
+    GridBagConstraints pos = new GridBagConstraints();
+    pos.insets = new Insets(5, 0, 20, 0);
+    pos.gridx = 1;
+    pos.gridy = 1;
+    pos.fill = GridBagConstraints.BOTH;
+    JLabel label = new JLabel("", SwingConstants.CENTER);
+    label.setFont(LABEL_FONT);
+    add(label, pos);
+    return label;
+  }
+
+  private void renderNewDate(ChronoLocalDate date)
+  {
+    updateDatePickers(date);
+    updateDateLabels();
+  }
+
+  private void updateDatePickers(ChronoLocalDate date)
+  {
+    isoDatePicker.setDate(date);
+    mdcDatePicker.setDate(date);
+  }
+
+  private void updateDateLabels()
+  {
+    isoDateLabel.setText(isoDatePicker.getDateString());
+    mdcDateLabel.setText(mdcDatePicker.getDateString());
   }
 }

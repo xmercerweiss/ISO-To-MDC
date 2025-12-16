@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ISO-To-MDC:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ISO_To_MDC_jar</output-path>
+    <root id="archive" name="iso2mdc-v0.1.jar">
+      <element id="module-output" name="ISO-To-MDC" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/net/xmercerweiss/mdc/v1.0/mdc-v1.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

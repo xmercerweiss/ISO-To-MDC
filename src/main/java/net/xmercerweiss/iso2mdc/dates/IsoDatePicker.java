@@ -2,6 +2,7 @@ package net.xmercerweiss.iso2mdc.dates;
 
 import java.awt.*;
 import javax.swing.*;
+import java.util.function.Consumer;
 import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDate;
 import static java.time.temporal.ChronoField.*;
@@ -11,14 +12,15 @@ public class IsoDatePicker extends DatePicker
 {
   // Class Constants
   private static final String TITLE = "Gregorian";
-  private static final int START_OF_WEEK = 7;  // Sunday
 
   // Constructors
-  public IsoDatePicker()
+  public IsoDatePicker(Consumer<ChronoLocalDate> listener)
   {
     super(
       TITLE,
-      LocalDate.now()
+      LocalDate.now(),
+      listener,
+      6
     );
   }
 
@@ -33,7 +35,6 @@ public class IsoDatePicker extends DatePicker
   void renderDatePanel()
   {
     datePanel.removeAll();
-    datePanel.repaint();
     LocalDate date = LocalDate.from(monthYear);
     int currentMonth = monthYear.get(MONTH_OF_YEAR);
 
@@ -55,26 +56,5 @@ public class IsoDatePicker extends DatePicker
         pos.gridy += 1;
       }
     }
-  }
-
-  // Private Methods
-  private JButton createDateButton(LocalDate date, int column)
-  {
-    JButton button = new JButton(String.valueOf(date.getDayOfMonth()));
-    button.setMargin(new Insets(0, 0, 0, 0));
-    button.setBorderPainted(false);
-    button.addActionListener(
-      _ -> dateListener.accept(date)
-    );
-    if (date.isEqual(currentDate))
-    {
-      button.setBackground(SELECTED_DATE_COLOR);
-      button.setForeground(Color.WHITE);
-    }
-    else
-      button.setBackground(
-        column % 2 == 0 ? Color.WHITE : Color.LIGHT_GRAY
-      );
-    return button;
   }
 }
